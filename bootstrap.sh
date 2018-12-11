@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 apt-get update
 apt-get install software-properties-common -y
-#apt-add-repository ppa:ansible/ansible -y
+#Alterando o arquivo hosts
+echo 127.0.0.1 localhost > /etc/hosts
+echo 127.0.0.1 puppet-srv01.local puppet-srv01 >> /etc/hosts
+echo 192.168.200.100 puppet-srv01.local puppet-srv01 >> /etc/hosts
+# Adicionando o repositório da PuppetLabs
+wget http://apt.puppetlabs.com/puppet6-release-bionic.deb
+dpkg -i puppet6-release-bionic.deb
 apt-get update
-#Instalação no servidor
-#apt install puppetmaster
-#apt-get install -y puppet-agent puppetserver
-#Instalação no agente
-apt-get install -y puppetmaster
+#Instalando o Puppet
+apt-get install -y puppet-agent puppetserver
 export PATH=/opt/puppetlabs/bin:$PATH
 echo "export PATH=/opt/puppetlabs/bin:\$PATH" >> /etc/bash.bashrc
-
-#if ! [ -L /var/www ]; then
-#  rm -rf /var/www
-#  ln -fs /vagrant /var/www
+#Movendo a pasta Puppet
+#if ! [ -L /etc/puppetlabs ]; then
+rm -rf /etc/puppetlabs
+ln -fs /vagrant/puppetlabs /etc
 #fi
